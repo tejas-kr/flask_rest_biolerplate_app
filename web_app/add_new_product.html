@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Products Demo</title>
+  </head>
+  <body>
+
+    <ul class="nav justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link" href="/index.html">All Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/add_new_product.html">Add New Product</a>
+      </li>
+    </ul>
+
+
+    <div class="container">
+
+      <div>
+        <div class="mb-3">
+          <label for="product_name" class="form-label">Product Name</label>
+          <input type="text" class="form-control" id="product_name" placeholder="Aloevera Super Cream">
+        </div>
+        <div class="mb-3">
+          <label for="product_description" class="form-label">Product Description</label>
+          <textarea class="form-control" id="product_description" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="product_price" class="form-label">Product Price (US $)</label>
+          <input class="form-control form-control-sm" id="product_price" type="number">
+        </div>
+        <div class="mb-3">
+          <label for="product_qty" class="form-label">Product Quantity</label>
+          <input class="form-control form-control-sm" id="product_qty" type="number">
+        </div>
+        <div class="mb-3">
+          <button type="button" class="btn btn-primary" onclick="add_product()">Add Product</button>
+        </div>
+      </div>
+
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <script>
+
+      function add_product() {
+        let name = $("#product_name").val()
+        let description = $("#product_description").val()
+        let price = $("#product_price").val()
+        let qty = $("#product_qty").val()
+
+        console.log(`${name}, ${description}, ${price}, ${qty}`)
+
+        fetch('http://127.0.0.1:5000/product', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "name": name,
+            "description": description,
+            "price": price,
+            "qty": qty
+          })
+        }).then(res => res.json())
+          .then(res => {
+            $("#product_name").val('')
+            $("#product_description").val('')
+            $("#product_price").val('')
+            $("#product_qty").val('')
+            alert("Product Added Successfully!")
+          }).catch(err => {
+            alert("Unable to add product pls try again!")
+          })
+
+
+      }
+    </script>
+  </body>
+</html>
